@@ -1,0 +1,8 @@
+/* Add here all your css styles (customizations) */
+.anchor::before {
+  content: "";
+  display: block;
+  margin-top: -50px;
+  position: absolute;
+}
+
