@@ -94,18 +94,17 @@ var
     
     });
 
-    // HTML processing
-    gulp.task('merge', function () {
-        gulp.src('src/index.html')
-            .pipe(merge({
-                'css/main.css':cssFilesNoSrc,
-                'js/main.js':jsFilesNoSrc
+    gulp.task('minify', function() {
+        return gulp.src('src/*.html')
+          .pipe(htmlmin({collapseWhitespace: true}))
+          .pipe(merge({
+            'css/main.css':cssFilesNoSrc,
+            'js/main.js':jsFilesNoSrc
             }))
-            .pipe(gulp.dest('build/'));
-    });
-
-          
-    gulp.task('critical', function () {
+          .pipe(gulp.dest('build/'));
+      });
+              
+      gulp.task('critical', function () {
         critical.generate({
             inline: true,
             base: 'build/',
@@ -126,17 +125,10 @@ var
         });
     });
 
-    gulp.task('minify', function() {
-        return gulp.src('build/*.html')
-          .pipe(htmlmin({collapseWhitespace: true}))
-          .pipe(gulp.dest('build'));
-      });
-    
-
     // Build command
     gulp.task('build', function (callback) {
-        runSequence('images', 'scss', 'js', 'css', 'merge', 'critical', 'minify',
+        runSequence('images', 'scss', 'js', 'css', 'minify', 'critical',
           callback
         )
-      })
+    })
 
