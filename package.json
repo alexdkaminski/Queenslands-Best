@@ -26,6 +26,7 @@
     "gulp-strip-debug": "^3.0.0",
     "gulp-uglify": "^3.0.0",
     "gulp-uncss": "^1.0.6",
+    "lozad": "^1.4.0",
     "postcss-uncss": "^0.16.1",
     "run-sequence": "^2.2.1"
   },
