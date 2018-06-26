@@ -16,22 +16,23 @@ var
     newer = require('gulp-newer'),
     imagemin = require('gulp-imagemin'),
     purgecss = require('gulp-purgecss'),
+    runSequence = require('run-sequence');
   
-    cssFiles = ['src/css/google.css','src/css/unify-core.css','src/css/unify-components.css','src/css/unify-globals.css','src/css/custom.css','src/vendor/bootstrap/bootstrap.min.css','src/vendor/icon-awesome/css/font-awesome.min.css','src/vendor/dzsparallaxer/dzsparallaxer.css','src/vendor/dzsparallaxer/dzsscroller/scroller.css','src/vendor/dzsparallaxer/advancedscroller/plugin.css','src/vendor/icon-line-pro/style.css','src/vendor/animate.css','src/vendor/hs-megamenu/src/hs.megamenu.css','src/vendor/hamburgers/hamburgers.min.css']
-    jsFiles = ['src/vendor/jquery/jquery.min.js','src/vendor/jquery-migrate/jquery-migrate.min.js','src/vendor/popper.min.js','src/vendor/bootstrap/bootstrap.min.js','src/vendor/dzsparallaxer/dzsparallaxer.js','src/vendor/dzsparallaxer/dzsscroller/scroller.js','src/vendor/dzsparallaxer/advancedscroller/plugin.js','src/js/hs.core.js','src/js/components/hs.header.js','src/js/helpers/hs.hamburgers.js','src/js/custom.js','src/js/plugins.js']
+    cssFiles = ['src/css/google.css','src/css/unify-core.css','src/css/unify-components.css','src/css/unify-globals.css','src/css/custom.css','src/vendor/bootstrap/bootstrap.min.css','src/vendor/icon-awesome/css/font-awesome.min.css','src/vendor/icon-line-pro/style.css','src/vendor/animate.css','src/vendor/hamburgers/hamburgers.min.css','/css/slick.css',]
+    jsFiles = ['src/vendor/jquery/jquery.min.js','src/vendor/jquery-migrate/jquery-migrate.min.js','src/vendor/popper.min.js','src/vendor/bootstrap/bootstrap.min.js','src/js/hs.core.js','src/js/components/hs.header.js','src/js/helpers/hs.hamburgers.js','src/js/custom.js','src/js/plugins.js','src/vendor/appear.js','src/vendor/masonry.pkgd.min.js','src/vendor/imagesloaded.pkgd.min.js','src/vendor/slick-carousel/slick.min.js','src/js/components/hs.carousel.js','src/js/components/hs.onscroll-animation.js']
 
 
     cssFilesNoSrc = [];
     cssFiles.forEach(function(element) {
-        cssFilesNoSrc.push(element.replace('src/',''))
+        cssFilesNoSrc.push(element.replace('src/','/'))
     });
 
     jsFilesNoSrc = [];
     jsFiles.forEach(function(element) {
-        jsFilesNoSrc.push(element.replace('src/',''))
+        jsFilesNoSrc.push(element.replace('src/','/'))
     });
 
-    // image processing
+    // Image processing
     gulp.task('images', function() {
         var out = 'build/img/';
         return gulp.src('src/img/**/*')
@@ -64,9 +65,6 @@ var
     // CSS processing
     gulp.task('css', function () {
         var plugins = [
-            //uncss({
-                //html: ['src/index.html']
-            //}),
             autoprefixer({ browsers: ['last 2 versions', '> 2%'] }),
             cssnano()
         ];
@@ -103,3 +101,10 @@ var
             }))
             .pipe(gulp.dest('build/'));
     });
+
+    // Build command
+    gulp.task('build', function (callback) {
+        runSequence('images', 'scss', 'js', 'css', 'merge',
+          callback
+        )
+      })
