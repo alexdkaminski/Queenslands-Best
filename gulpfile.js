@@ -37,7 +37,7 @@ var
         var out = 'build/img/';
         return gulp.src('src/img/**/*')
         .pipe(newer(out))
-        .pipe(imagemin({ optimizationLevel: 5 }))
+        .pipe(imagemin({ optimizationLevel: 7 }))
         .pipe(gulp.dest(out));
     });
 
