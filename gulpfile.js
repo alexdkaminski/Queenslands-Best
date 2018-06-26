@@ -17,7 +17,8 @@ var
     imagemin = require('gulp-imagemin'),
     purgecss = require('gulp-purgecss'),
     runSequence = require('run-sequence'),
-    critical = require('critical');
+    critical = require('critical'),
+    htmlmin = require('gulp-htmlmin');
   
     cssFiles = ['src/css/google.css','src/vendor/bootstrap/bootstrap.min.css','src/vendor/icon-awesome/css/font-awesome.min.css','src/vendor/icon-line-pro/style.css','src/css/unify-core.css','src/css/unify-components.css','src/css/unify-globals.css','src/vendor/animate.css','src/vendor/animate.css','src/vendor/hamburgers/hamburgers.min.css','src/css/slick.css', 'src/css/custom.css']
     jsFiles = ['src/vendor/jquery/jquery.min.js','src/vendor/jquery-migrate/jquery-migrate.min.js','src/vendor/popper.min.js','src/vendor/bootstrap/bootstrap.min.js','src/vendor/appear.js','src/vendor/masonry.pkgd.min.js','src/vendor/imagesloaded.pkgd.min.js','src/vendor/slick-carousel/slick.min.js','src/js/hs.core.js','src/js/components/hs.header.js','src/js/helpers/hs.hamburgers.js','src/js/components/hs.carousel.js','src/js/components/hs.onscroll-animation.js','src/js/custom.js','src/js/plugins.js']
@@ -125,9 +126,16 @@ var
         });
     });
 
+    gulp.task('minify', function() {
+        return gulp.src('build/*.html')
+          .pipe(htmlmin({collapseWhitespace: true}))
+          .pipe(gulp.dest('build'));
+      });
+    
+
     // Build command
     gulp.task('build', function (callback) {
-        runSequence('images', 'scss', 'js', 'css', 'merge', 'critical',
+        runSequence('images', 'scss', 'js', 'css', 'merge', 'critical', 'minify',
           callback
         )
       })
